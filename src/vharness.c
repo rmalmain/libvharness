@@ -1,8 +1,3 @@
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
 #include "vharness.h"
 
 volatile char input_buf[VHARNESS_MAX_INPUT_SIZE];

@@ -22,16 +22,19 @@ else()
   message(FATAL_ERROR "The target compiler is not supported")
 endif()
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  set(VHARNESS_PLATFORM linux)
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Android")
-  set(VHARNESS_PLATFORM android)
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Generic")
-  set(VHARNESS_PLATFORM generic)
-else()
-  message(FATAL_ERROR "The target platform is not supported")
+if (NOT DEFINED VHARNESS_PLATFORM)
+    message(FATAL_ERROR "VHARNESS_PLATFORM is undefined.")
 endif()
 
+# if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+#   set(VHARNESS_PLATFORM linux)
+# elseif (CMAKE_SYSTEM_NAME STREQUAL "Android")
+#   set(VHARNESS_PLATFORM android)
+# elseif (CMAKE_SYSTEM_NAME STREQUAL "Generic")
+#   set(VHARNESS_PLATFORM generic)
+# else()
+#   message(FATAL_ERROR "The target platform is not supported")
+# endif()
 set(VHARNESS_ARCH ${CMAKE_SYSTEM_PROCESSOR})
 
 if (VHARNESS_INCLUDE_ONLY)
@@ -43,14 +46,14 @@ endif()
 
 
 FILE(GLOB C_SRCS      src/*.c)
-FILE(GLOB API_C_SRCS  src/${VHARNESS_API}/*.c)
-FILE(GLOB ARCH_C_SRCS src/${VHARNESS_API}/arch/${VHARNESS_ARCH}/*.c)
+FILE(GLOB API_C_SRCS  src/api/${VHARNESS_API}/*.c)
+FILE(GLOB ARCH_C_SRCS src/api/${VHARNESS_API}/arch/${VHARNESS_ARCH}/*.c)
 
 set(INCLUDE_MAIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(INCLUDE_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/${VHARNESS_API})
-set(INCLUDE_PLATFORM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/${VHARNESS_API}/platform/${VHARNESS_PLATFORM})
-set(INCLUDE_ARCH_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/${VHARNESS_API}/arch/${VHARNESS_ARCH})
-set(INCLUDE_COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/${VHARNESS_API}/compiler/${VHARNESS_COMPILER})
+set(INCLUDE_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/api/${VHARNESS_API})
+set(INCLUDE_PLATFORM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/platform/${VHARNESS_PLATFORM})
+set(INCLUDE_ARCH_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/arch/${VHARNESS_ARCH})
+set(INCLUDE_COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/compiler/${VHARNESS_COMPILER})
 
 set(INCLUDE_DIRS
       ${INCLUDE_MAIN_DIR}
@@ -103,6 +106,13 @@ set_target_properties(${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}
   PUBLIC_HEADER DESTINATION include
+)
+
+install(FILES
+            ${C_SRCS}
+            ${API_C_SRCS}
+            ${ARCH_C_SRCS}
+        DESTINATION src
 )
 
 if (VHARNESS_TESTS)

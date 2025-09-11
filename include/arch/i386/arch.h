@@ -1,0 +1,6 @@
+#ifndef VHARNESS_ARCH_H
+#define VHARNESS_ARCH_H
+
+#define VHARNESS_WORD_SIZE 32
+
+#endif
