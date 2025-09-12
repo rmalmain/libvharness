@@ -1,7 +1,7 @@
 #include "lqemu.h"
 
 #define LIBAFL_DEFINE_FUNCTIONS(name, opcode)                                  \
-  vword LLQEMU_CALLING_CONVENTION _lqemu_##name##_call0(vword action) {      \
+  vword LQEMU_CALLING_CONVENTION _lqemu_##name##_call0(vword action) {      \
     vword ret;                                                                \
     __asm__ volatile("mov r0, %1\n"                                            \
                      ".word " XSTRINGIFY(opcode) "\n"                          \
@@ -12,7 +12,7 @@
     return ret;                                                                \
   }                                                                            \
                                                                                \
-  vword LLQEMU_CALLING_CONVENTION _lqemu_##name##_call1(vword action,        \
+  vword LQEMU_CALLING_CONVENTION _lqemu_##name##_call1(vword action,        \
                                                          vword arg1) {        \
     vword ret;                                                                \
     __asm__ volatile("mov r0, %1\n"                                            \
@@ -25,7 +25,7 @@
     return ret;                                                                \
   }                                                                            \
                                                                                \
-  vword LLQEMU_CALLING_CONVENTION _lqemu_##name##_call2(                      \
+  vword LQEMU_CALLING_CONVENTION _lqemu_##name##_call2(                      \
       vword action, vword arg1, vword arg2) {                               \
     vword ret;                                                                \
     __asm__ volatile("mov r0, %1\n"                                            \

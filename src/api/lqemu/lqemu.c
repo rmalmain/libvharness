@@ -6,7 +6,7 @@ STATIC_CHECKS
 #endif
 
 #ifdef LQEMU_SUPPORT_STDIO
-static char llqprintf_buffer[LQEMU_PRINTF_MAX_SIZE] = {0};
+static char lqprintf_buffer[LQEMU_PRINTF_MAX_SIZE] = {0};
 #endif
 
 vnoinline vword libafl_qemu_start_virt(volatile void *buf_vaddr, vword max_len) {
@@ -42,7 +42,7 @@ vnoinline void libafl_qemu_internal_error(void) {
 
 #ifdef LQEMU_SUPPORT_STDIO
 vnoinline void vlqprintf(const char *fmt, va_list ap) {
-    int res = vsnprintf(llqprintf_buffer, LQEMU_PRINTF_MAX_SIZE, fmt, ap);
+    int res = vsnprintf(lqprintf_buffer, LQEMU_PRINTF_MAX_SIZE, fmt, ap);
 
     if (res >= LQEMU_PRINTF_MAX_SIZE) {
         // buffer is not big enough, either recompile the target with more
@@ -51,7 +51,7 @@ vnoinline void vlqprintf(const char *fmt, va_list ap) {
     }
 
     _lqemu_custom_insn_call2(LIBAFL_QEMU_COMMAND_LQPRINTF,
-                             (vword)llqprintf_buffer, res);
+                             (vword)lqprintf_buffer, res);
 }
 
 vnoinline void lqprintf(const char *fmt, ...) {
@@ -60,7 +60,20 @@ vnoinline void lqprintf(const char *fmt, ...) {
     vlqprintf(fmt, args);
     va_end(args);
 }
+#else
+size_t strlen(const char* s) {
+    int i = 0;
+    while (*s != '\0') {
+        s++;
+        i++;
+    }
 
+    return i;
+}
+
+vnoinline void lqprintf(const char* fmt, ...) {
+    _lqemu_custom_insn_call2(LIBAFL_QEMU_COMMAND_LQPRINTF, (vword) fmt, strlen(fmt));
+}
 #endif
 
 vnoinline void libafl_qemu_test(void) {

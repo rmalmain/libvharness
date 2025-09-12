@@ -51,8 +51,10 @@ void libafl_qemu_set_covmap_virt(volatile char *vaddr, vword len,
 void libafl_qemu_set_covmap_phys(volatile char *paddr, vword len);
 
 #ifdef LQEMU_SUPPORT_STDIO
-void fmtarg lqprintf(const char *fmt, ...);
 void vlqprintf(const char *fmt, va_list ap);
 #endif
+
+// if stdio is not supported, simply prints the fmt string.
+void fmtarg lqprintf(const char *fmt, ...);
 
 #endif

@@ -8,7 +8,7 @@ struct vharness_input vharness_init(void) {
     input_buf[i] = 0;
   }
 
-  return (struct vharness_input){
+  return (struct vharness_input) {
       .input = input_buf,
       .input_size = 0,
       .input_max_size = VHARNESS_MAX_INPUT_SIZE,
