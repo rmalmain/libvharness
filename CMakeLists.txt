@@ -26,15 +26,6 @@ if (NOT DEFINED VHARNESS_PLATFORM)
     message(FATAL_ERROR "VHARNESS_PLATFORM is undefined.")
 endif()
 
-# if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-#   set(VHARNESS_PLATFORM linux)
-# elseif (CMAKE_SYSTEM_NAME STREQUAL "Android")
-#   set(VHARNESS_PLATFORM android)
-# elseif (CMAKE_SYSTEM_NAME STREQUAL "Generic")
-#   set(VHARNESS_PLATFORM generic)
-# else()
-#   message(FATAL_ERROR "The target platform is not supported")
-# endif()
 set(VHARNESS_ARCH ${CMAKE_SYSTEM_PROCESSOR})
 
 if (VHARNESS_INCLUDE_ONLY)
@@ -47,6 +38,7 @@ endif()
 
 FILE(GLOB C_SRCS      src/*.c)
 FILE(GLOB API_C_SRCS  src/api/${VHARNESS_API}/*.c)
+FILE(GLOB PLATFORM_C_SRCS src/api/${VHARNESS_API}/platform/${VHARNESS_PLATFORM}/*.c)
 FILE(GLOB ARCH_C_SRCS src/api/${VHARNESS_API}/arch/${VHARNESS_ARCH}/*.c)
 
 set(INCLUDE_MAIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -79,6 +71,7 @@ else()
     PRIVATE
       ${C_SRCS}
       ${API_C_SRCS}
+      ${PLATFORM_C_SRCS}
       ${ARCH_C_SRCS}
     PUBLIC
       FILE_SET public_headers
@@ -111,6 +104,7 @@ install(TARGETS ${PROJECT_NAME}
 install(FILES
             ${C_SRCS}
             ${API_C_SRCS}
+            ${PLATFORM_C_SRCS}
             ${ARCH_C_SRCS}
         DESTINATION src
 )

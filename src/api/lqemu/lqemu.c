@@ -53,13 +53,6 @@ vnoinline void vlqprintf(const char *fmt, va_list ap) {
     _lqemu_custom_insn_call2(LIBAFL_QEMU_COMMAND_LQPRINTF,
                              (vword)lqprintf_buffer, res);
 }
-
-vnoinline void lqprintf(const char *fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    vlqprintf(fmt, args);
-    va_end(args);
-}
 #else
 size_t strlen(const char* s) {
     int i = 0;
@@ -71,10 +64,18 @@ size_t strlen(const char* s) {
     return i;
 }
 
-vnoinline void lqprintf(const char* fmt, ...) {
+vnoinline void vlqprintf(const char *fmt, va_list ap) {
+    UNUSED(ap);
     _lqemu_custom_insn_call2(LIBAFL_QEMU_COMMAND_LQPRINTF, (vword) fmt, strlen(fmt));
 }
 #endif
+
+vnoinline void lqprintf(const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    vlqprintf(fmt, args);
+    va_end(args);
+}
 
 vnoinline void libafl_qemu_test(void) {
     _lqemu_custom_insn_call1(LIBAFL_QEMU_COMMAND_TEST, LIBAFL_QEMU_TEST_VALUE);

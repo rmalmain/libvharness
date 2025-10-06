@@ -3,6 +3,8 @@
 
 #include "platform.h"
 
+#define UNUSED(x) (void)(x)
+
 #if defined(noinline)
 #define vnoinline noinline
 #else
@@ -10,6 +12,8 @@
 #endif
 
 #define fmtarg __attribute__((format(printf, 1, 2)))
+
+#define weak __attribute__((weak))
 
 #if __STDC_VERSION__ >= 201112L
 #define STATIC_CHECKS                                                         \

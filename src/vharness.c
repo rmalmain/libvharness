@@ -2,14 +2,16 @@
 
 volatile char input_buf[VHARNESS_MAX_INPUT_SIZE];
 
-struct vharness_input vharness_init(void) {
-  // make sure the input is really allocated
-  for (size_t i = 0; i < VHARNESS_MAX_INPUT_SIZE; i += getpagesize()) {
-    input_buf[i] = 0;
-  }
+// placeholder, resolved during final linking
+void weak vharness_platform_init(volatile char* input, size_t max_len) {
+    UNUSED(input);
+    UNUSED(max_len);
+}
 
-  return (struct vharness_input) {
-      .input = input_buf,
+struct vharness_input vharness_init(void) {
+  vharness_platform_init(input_buf, VHARNESS_MAX_INPUT_SIZE);
+
+  return (struct vharness_input) { .input = input_buf,
       .input_size = 0,
       .input_max_size = VHARNESS_MAX_INPUT_SIZE,
       .pos = 0,
