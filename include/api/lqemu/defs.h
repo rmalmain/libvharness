@@ -4,5 +4,4 @@
 #include "arch.h"
 #include "compiler.h"
 #include "platform.h"
-
 #endif
