@@ -2,11 +2,14 @@
 #define PLATFORM_COMMON_H
 
 #include "arch.h"
+#include "std.h"
 
+#ifdef USE_STD
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#endif
 
 #if VHARNESS_WORD_SIZE == 64
 typedef uint64_t vword;

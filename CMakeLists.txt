@@ -4,6 +4,9 @@ project("vharness")
 set(VHARNESS_API "lqemu" CACHE STRING "The backend API to use to communicate with the fuzzer")
 set_property(CACHE VHARNESS_API PROPERTY STRINGS "lqemu" "nyx")
 
+set(VHARNESS_STD $ENV{VHARNESS_STD} CACHE STRING "Wether we should use the std or nostd variant")
+set_property(CACHE VHARNESS_STD PROPERTY STRINGS "std" "nostd")
+
 set(VHARNESS_INCLUDE_ONLY OFF CACHE BOOL "Whether the library should only export includes or not")
 set(VHARNESS_TESTS OFF CACHE BOOL "Whether the library should build tests or not")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -35,17 +38,18 @@ else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wextra)
 endif()
 
-
 FILE(GLOB C_SRCS      src/*.c)
 FILE(GLOB API_C_SRCS  src/api/${VHARNESS_API}/*.c)
 FILE(GLOB PLATFORM_C_SRCS src/api/${VHARNESS_API}/platform/${VHARNESS_PLATFORM}/*.c)
 FILE(GLOB ARCH_C_SRCS src/api/${VHARNESS_API}/arch/${VHARNESS_ARCH}/*.c)
+FILE(GLOB STD_C_SRCS src/std/${VHARNESS_STD}/*.c)
 
 set(INCLUDE_MAIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(INCLUDE_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/api/${VHARNESS_API})
 set(INCLUDE_PLATFORM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/platform/${VHARNESS_PLATFORM})
 set(INCLUDE_ARCH_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/arch/${VHARNESS_ARCH})
 set(INCLUDE_COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/compiler/${VHARNESS_COMPILER})
+set(INCLUDE_STD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/std/${VHARNESS_STD})
 
 set(INCLUDE_DIRS
       ${INCLUDE_MAIN_DIR}
@@ -53,9 +57,10 @@ set(INCLUDE_DIRS
       ${INCLUDE_PLATFORM_DIR}
       ${INCLUDE_ARCH_DIR}
       ${INCLUDE_COMPILER_DIR}
+      ${INCLUDE_STD_DIR}
 )
 
-FILE(GLOB H_SRCS ${INCLUDE_MAIN_DIR}/*.h ${INCLUDE_API_DIR}/*.h ${INCLUDE_PLATFORM_DIR}/*.h ${INCLUDE_ARCH_DIR}/*.h ${INCLUDE_COMPILER_DIR}/*.h)
+FILE(GLOB H_SRCS ${INCLUDE_MAIN_DIR}/*.h ${INCLUDE_API_DIR}/*.h ${INCLUDE_PLATFORM_DIR}/*.h ${INCLUDE_ARCH_DIR}/*.h ${INCLUDE_COMPILER_DIR}/*.h ${INCLUDE_STD_DIR}/*.h)
 
 if (VHARNESS_INCLUDE_ONLY)
   target_sources(${PROJECT_NAME}
@@ -73,6 +78,7 @@ else()
       ${API_C_SRCS}
       ${PLATFORM_C_SRCS}
       ${ARCH_C_SRCS}
+      ${STD_C_SRCS}
     PUBLIC
       FILE_SET public_headers
       TYPE HEADERS
@@ -106,6 +112,7 @@ install(FILES
             ${API_C_SRCS}
             ${PLATFORM_C_SRCS}
             ${ARCH_C_SRCS}
+            ${STD_C_SRCS}
         DESTINATION src
 )
 
@@ -133,4 +140,9 @@ if (NOT ${VHARNESS_API} STREQUAL "nyx")
   if (NOT IS_DIRECTORY "${INCLUDE_COMPILER_DIR}")
     message(FATAL_ERROR "The compiler \"${VHARNESS_COMPILER}\" include dir does not exist.")
   endif()
+
+  if (NOT IS_DIRECTORY "${INCLUDE_STD_DIR}")
+    message(FATAL_ERROR "The std \"${VHARNESS_STD}\" include dir does not exist.")
+  endif()
+
 endif()

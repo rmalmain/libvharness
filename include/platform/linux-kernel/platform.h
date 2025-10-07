@@ -3,9 +3,9 @@
 
 #include "arch.h"
 
-#include <linux/types.h>
 #include <linux/sprintf.h>
 #include <linux/stdarg.h>
+#include <linux/types.h>
 
 // typedef __builtin_va_list va_list;
 // #define va_start(v, l)	__builtin_va_start(v, l)

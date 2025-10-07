@@ -1,12 +1,16 @@
 #ifndef VHARNESS_H
 #define VHARNESS_H
 
+#include "vharness_api.h"
+
+#include "std.h"
+
+#ifdef USE_STD
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-
-#include "vharness_api.h"
+#endif
 
 #define VHARNESS_MAX_INPUT_SIZE (1 * 1024 * 1024)
 
