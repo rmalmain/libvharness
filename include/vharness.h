@@ -6,16 +6,19 @@
 #include "std.h"
 
 #ifdef USE_STD
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <string.h>
 #endif
 
 #define VHARNESS_MAX_INPUT_SIZE (1 * 1024 * 1024)
 
 struct vharness_input {
-    volatile char *input;
-    size_t input_max_size;
-    size_t input_size;
-    size_t pos;
+  volatile char *input;
+  size_t input_max_size;
+  size_t input_size;
+  size_t pos;
 };
 
 struct vharness_input vharness_init(void);
