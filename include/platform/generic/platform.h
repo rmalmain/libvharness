@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #if VHARNESS_WORD_SIZE == 64
 typedef uint64_t vword;
