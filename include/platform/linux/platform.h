@@ -3,14 +3,10 @@
 
 #include "arch.h"
 
-#if defined(__KERNEL__)
-#include <linux/types.h>
-#else
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#endif
 
 #if VHARNESS_WORD_SIZE == 64
 typedef uint64_t vword;
@@ -21,7 +17,5 @@ typedef uint32_t vword;
 #endif
 
 #define LQEMU_CALLING_CONVENTION
-
-#define LQEMU_SUPPORT_STDIO
 
 #endif

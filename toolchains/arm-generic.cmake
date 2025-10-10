@@ -1,6 +1,9 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
+
+# vharness options -- must be defined
 set(VHARNESS_PLATFORM generic)
+set(VHARNESS_FEMTOLIBC OFF) # we rely on the libc provided by the ARM toolchain
 
 set(triple arm-none-eabi)
 

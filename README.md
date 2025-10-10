@@ -33,3 +33,11 @@ Once the build is done, `<install_path>` will contain 2 directories: `include` a
 - `include`: the include files to use. there are 2 files that should be interesting to include:
     - `lqemu.h` if using the LibAFL QEMU API.
     - `nyx.h` if using the Nyx API.
+
+# femtolibc
+
+To ensure maximum compatibility of the library across architectures, a very minimal libc implementation is available: `femtolibc`.
+It is only used for `generic` toolchains by default, when a full-fledged libc is not considered to be available.
+
+The implementation is not tailored for performance, so it is always better to use another libc when it is available in the toolchain.
+However, it is not expected to observe major performance overhead in most cases.
