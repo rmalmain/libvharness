@@ -25,6 +25,4 @@ typedef uint32_t vword;
 
 #define LQEMU_CALLING_CONVENTION
 
-#define LQEMU_SUPPORT_STDIO
-
 #endif

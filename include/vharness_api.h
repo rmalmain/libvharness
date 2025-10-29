@@ -8,6 +8,8 @@
 #ifndef VHARNESS_API_H
 #define VHARNESS_API_H
 
+#include <stddef.h>
+
 #include "platform.h"
 #include "compiler_common.h"
 

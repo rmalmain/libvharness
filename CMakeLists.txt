@@ -35,7 +35,6 @@ else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Werror -Wall -Wextra)
 endif()
 
-
 FILE(GLOB C_SRCS      src/*.c)
 FILE(GLOB API_C_SRCS  src/api/${VHARNESS_API}/*.c)
 FILE(GLOB PLATFORM_C_SRCS src/api/${VHARNESS_API}/platform/${VHARNESS_PLATFORM}/*.c)
@@ -55,6 +54,18 @@ set(INCLUDE_DIRS
       ${INCLUDE_COMPILER_DIR}
 )
 
+if (VHARNESS_FEMTOLIBC STREQUAL "ON")
+    message(STATUS "Using femtolibc as the libc.")
+    add_compile_options(-nostdlib -nostartfiles -static)
+    FILE(GLOB FEMTOLIBC_C_SRCS src/femtolibc/*.c)
+    set(INCLUDE_DIRS ${INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include/femtolibc)
+elseif (VHARNESS_FEMTOLIBC STREQUAL "OFF")
+    set(FEMTOLIBC_C_SRCS)
+    message(STATUS "Using compiler default libc.")
+else()
+    message(FATAL_ERROR "VHARNESS_FEMTOLIBC is not correctly specified (either ON or OFF) by the toolchain file.")
+endif()
+
 FILE(GLOB H_SRCS ${INCLUDE_MAIN_DIR}/*.h ${INCLUDE_API_DIR}/*.h ${INCLUDE_PLATFORM_DIR}/*.h ${INCLUDE_ARCH_DIR}/*.h ${INCLUDE_COMPILER_DIR}/*.h)
 
 if (VHARNESS_INCLUDE_ONLY)
@@ -73,6 +84,7 @@ else()
       ${API_C_SRCS}
       ${PLATFORM_C_SRCS}
       ${ARCH_C_SRCS}
+      ${FEMTOLIBC_C_SRCS}
     PUBLIC
       FILE_SET public_headers
       TYPE HEADERS
@@ -106,6 +118,7 @@ install(FILES
             ${API_C_SRCS}
             ${PLATFORM_C_SRCS}
             ${ARCH_C_SRCS}
+            ${FEMTOLIBC_C_SRCS}
         DESTINATION src
 )
 
