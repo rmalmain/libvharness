@@ -66,7 +66,10 @@ else()
     message(FATAL_ERROR "VHARNESS_FEMTOLIBC is not correctly specified (either ON or OFF) by the toolchain file.")
 endif()
 
-FILE(GLOB H_SRCS ${INCLUDE_MAIN_DIR}/*.h ${INCLUDE_API_DIR}/*.h ${INCLUDE_PLATFORM_DIR}/*.h ${INCLUDE_ARCH_DIR}/*.h ${INCLUDE_COMPILER_DIR}/*.h)
+set(H_GLOBS ${INCLUDE_DIRS})
+list(TRANSFORM H_GLOBS APPEND "/*.h")
+
+FILE(GLOB H_SRCS ${H_GLOBS})
 
 if (VHARNESS_INCLUDE_ONLY)
   target_sources(${PROJECT_NAME}
