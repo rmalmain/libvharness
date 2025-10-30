@@ -26,4 +26,6 @@ bool vharness_get_u32(struct vharness_input *vinput, uint32_t *val);
 bool vharness_get_u64(struct vharness_input *vinput, uint64_t *val);
 bool vharness_get_int(struct vharness_input *vinput, int *val);
 
+void fmtarg vharness_printf(const char *fmt, ...);
+
 #endif

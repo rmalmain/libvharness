@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdarg.h>
 
 #include "vharness.h"
 
@@ -51,4 +52,12 @@ bool vharness_get_u32(struct vharness_input *vinput, uint32_t *val) {
 
 bool vharness_get_int(struct vharness_input *vinput, int *val) {
   return vharness_get_buf(vinput, val, sizeof(val));
+}
+
+void fmtarg vharness_printf(const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  vharness_api_vprintf(fmt, args);
+  va_end(args);
 }

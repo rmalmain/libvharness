@@ -9,11 +9,13 @@
 #define VHARNESS_API_H
 
 #include <stddef.h>
+#include <stdarg.h>
 
 #include "platform.h"
 #include "compiler_common.h"
 
-void fmtarg vharness_api_printf(const char *fmt, ...);
+void vharness_api_vprintf(const char *fmt, va_list ap);
+
 void vharness_api_trace_vaddr(void* addr, size_t len);
 
 #endif
