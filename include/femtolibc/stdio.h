@@ -2,7 +2,8 @@
 #define _FEMTOLIBC_STDIO_H
 
 #include "stddef.h"
+#include "stdarg.h"
 
-int vsnprintf(char *__restrict, size_t, const char *__restrict, __builtin_va_list);
+int vsnprintf(char *restrict s, size_t n, const char *restrict fmt, va_list ap);
 
 #endif
